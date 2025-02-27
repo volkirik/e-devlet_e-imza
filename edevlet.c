@@ -13,6 +13,13 @@ void execute_command(const char *command) {
     system(command);
 }
 
+void strip_newline(char *str) {
+    size_t len = strlen(str);
+    if (len > 0 && (str[len - 1] == '\n' || str[len - 1] == '\r')) {
+        str[len - 1] = '\0';
+    }
+}
+
 int main() {
     char command[512];
     char jnlp_url[256] = "";
@@ -30,6 +37,7 @@ int main() {
     FILE *file = fopen("temp.txt", "r");
     if (file) {
         fgets(jnlp_url, sizeof(jnlp_url), file);
+        strip_newline(jnlp_url);
         fclose(file);
     }
     remove("temp.txt");
@@ -48,6 +56,7 @@ int main() {
     file = fopen("temp.txt", "r");
     if (file) {
         fgets(jar_pathname, sizeof(jar_pathname), file);
+        strip_newline(jar_pathname);
         fclose(file);
     }
     remove("temp.txt");
@@ -57,6 +66,7 @@ int main() {
     file = fopen("temp.txt", "r");
     if (file) {
         fgets(jar_filename, sizeof(jar_filename), file);
+        strip_newline(jar_filename);
         fclose(file);
     }
     remove("temp.txt");
@@ -79,4 +89,3 @@ int main() {
 
     return 0;
 }
-
