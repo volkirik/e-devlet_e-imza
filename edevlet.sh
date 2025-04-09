@@ -28,7 +28,7 @@ echo "JAR URL: $jar_absolute" >> "$log_file"
 
 # JAR dosyasını indir ve çalıştır
 if curl -s "$jar_absolute" -o "$jar_file"; then
-    java -jar "$jar_file" >> "$log_file" 2>&1 &
+    /usr/lib/jvm/oracle-java8-jre-amd64/bin/java -jar "$jar_file" >> "$log_file" 2>&1 &
 else
     echo "JAR dosyası indirilemedi." >> "$log_file"
 fi

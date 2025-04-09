@@ -13,13 +13,6 @@ void execute_command(const char *command) {
     system(command);
 }
 
-void strip_newline(char *str) {
-    size_t len = strlen(str);
-    if (len > 0 && (str[len - 1] == '\n' || str[len - 1] == '\r')) {
-        str[len - 1] = '\0';
-    }
-}
-
 int main() {
     char command[512];
     char jnlp_url[256] = "";
@@ -37,7 +30,6 @@ int main() {
     FILE *file = fopen("temp.txt", "r");
     if (file) {
         fgets(jnlp_url, sizeof(jnlp_url), file);
-        strip_newline(jnlp_url);
         fclose(file);
     }
     remove("temp.txt");
@@ -56,7 +48,6 @@ int main() {
     file = fopen("temp.txt", "r");
     if (file) {
         fgets(jar_pathname, sizeof(jar_pathname), file);
-        strip_newline(jar_pathname);
         fclose(file);
     }
     remove("temp.txt");
@@ -66,7 +57,6 @@ int main() {
     file = fopen("temp.txt", "r");
     if (file) {
         fgets(jar_filename, sizeof(jar_filename), file);
-        strip_newline(jar_filename);
         fclose(file);
     }
     remove("temp.txt");
@@ -80,7 +70,7 @@ int main() {
     // JAR dosyasını indir ve çalıştır
     snprintf(command, sizeof(command), "curl -s \"%s\" -o \"%s\"", jar_absolute, JAR_FILE);
     if (system(command) == 0) {
-        snprintf(command, sizeof(command), "/usr/lib/jvm/oracle-java8-jre-amd64/bin/java -jar \"%s\" >> \"%s\" 2>&1 &", JAR_FILE, LOG_FILE);
+        snprintf(command, sizeof(command), "java -jar \"%s\" >> \"%s\" 2>&1 &", JAR_FILE, LOG_FILE);
         execute_command(command);
     } else {
         snprintf(command, sizeof(command), "echo \"JAR dosyası indirilemedi.\" >> \"%s\"", LOG_FILE);
